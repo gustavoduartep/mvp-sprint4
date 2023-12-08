@@ -1,0 +1,123 @@
+$(document).ready(function () {
+  $("#vinhoForm").submit(function (event) {
+    var formData = $(this).serialize();
+
+    $.ajax({
+      type: "POST",
+      url: "http://127.0.0.1:5000/vinho",
+      data: formData,
+      success: function (response) {
+        $("#vinhoForm")[0].reset();
+
+        carregaTabela();
+
+        exibirAlerta(
+          "success",
+          "Sucesso!",
+          "O item foi adicionado na lista de compra.",
+          3000
+        );
+      },
+      error: function (error) {
+        console.error("Erro ao enviar dados:", error);
+      },
+    });
+  });
+
+  function carregaTabela() {
+    $.ajax({
+      type: "GET",
+      url: "http://127.0.0.1:5000/vinhos",
+      dataType: "json",
+      success: function (data) {
+        $("#vinhoTable tbody").empty();
+
+        console.log(data);
+
+        $.each(data.vinhos, function (index, vinho) {
+          var qualidade_vinho =
+            vinho.quality == 1
+              ? "<span class='quality-indicator '><i class='fa fa-caret-up above-average'></i> Acima da média</span>"
+              : "<span class='quality-indicator'><i class='fa fa-caret-down below-average'></i> Abaixo da média</span>";
+
+          var row = "<tr>";
+          row += "<td>" + vinho.id + "</td>";
+          row += "<td>" + vinho.volatile_acidity + "</td>";
+          row += "<td>" + vinho.citric_acid + "</td>";
+          row += "<td>" + vinho.residual_sugar + "</td>";
+          row += "<td>" + vinho.chlorides + "</td>";
+          row += "<td>" + vinho.free_sulfur_dioxide + "</td>";
+          row += "<td>" + vinho.total_sulfur_dioxide + "</td>";
+          row += "<td>" + vinho.density + "</td>";
+          row += "<td>" + vinho.ph + "</td>";
+          row += "<td>" + vinho.sulphates + "</td>";
+          row += "<td>" + vinho.alcohol + "</td>";
+          row += "<td>" + qualidade_vinho + "</td>";
+          row +=
+            "<td><i class='fa fa-trash deletar-vinho' aria-hidden='true' onclick='deletarVinho(" +
+            vinho.id +
+            ")'></i></td>";
+          row += "</tr>";
+
+          // Adicionar a linha à tabela
+          $("#vinhoTable tbody").append(row);
+        });
+      },
+      error: function (error) {
+        console.error("Erro ao carregar a tabela:", error);
+      },
+    });
+  }
+
+  carregaTabela();
+});
+
+function deletarVinho(idVinho) {
+  Swal.fire({
+    title: "Remover o dado?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#CCC",
+    confirmButtonText: "Sim",
+    confirmButtonColor: "#721c24",
+    background: "#FFF",
+    color: "#721c24",
+    cancelButtonText: "Cancelar",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: `http://127.0.0.1:5000/vinho?id=${idVinho}`,
+        method: "DELETE",
+        success: function () {
+          carregaTabela();
+
+          Swal.fire({
+            title: "Removido!",
+            text: "Vinho removido da base de dados.",
+            icon: "success",
+            confirmButtonText: "Ok",
+            color: "#721c24",
+            confirmButtonColor: "#721c24",
+            background: "#FFF",
+            timer: 3000,
+          });
+        },
+      });
+    }
+  });
+}
+
+// Modal para exibir o resultado dos eventos
+function exibirAlerta(status, titulo, texto, tempo) {
+  Swal.fire({
+    position: "center",
+    title: titulo,
+    text: texto,
+    icon: status,
+    color: "#fff",
+    showConfirmButton: false,
+    background: "#212529",
+    timer: tempo,
+  });
+}

@@ -1,0 +1,89 @@
+body {
+    background-color: #f8f9fa; /* Tom de cinza claro para o fundo */
+    color: #721c24; /* Cor de vinho para o texto principal */
+}
+
+header {
+    background-color: #FFF;
+    padding: 10px;
+}
+
+header h1 {
+    color:#721c24;
+    font-size:1.4rem;
+    margin-bottom:-4px;
+}
+ header p {
+    color:#495057;
+}
+
+header #logo {
+    width:250px;
+}
+
+.form-container {
+    margin: 20px;
+}
+
+table {
+    margin-top: 20px;
+}
+
+th, td {
+    text-align: center;
+}
+
+th {
+    background-color: #721c24;
+    color: #f8f9fa;
+    font-size:0.8rem;
+    font-weight: 400;
+    vertical-align: middle;
+
+}
+
+a {
+    color: #721c24;
+}
+
+.button-wine {
+    background-color: #721c24;
+    color: #f8f9fa;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-wine:hover, .button-wine:active, .button-wine:focus {
+    background-color: #52161a;
+    color:#f8f9fa;
+    box-shadow: none;
+}
+
+.quality-indicator {
+    line-height: 1.5;
+    margin-bottom: 5px;
+  }
+
+  .quality-indicator i {
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+
+  .above-average {
+    color: #7BD235;
+  }
+
+  .below-average {
+    color: #FD402C;
+  }
+  .deletar-vinho {
+    color: #721c24;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .deletar-vinho:hover {
+    color: #52161a;;
+  }

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Sistema de Pesquisas de Qualidade de Vinhos</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Sweet Alert 2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./css/styles.css">
+    <script src="./js/jquery-3.6.4.min.js"></script>
+
+    <link rel="icon" href="./img/ico-wine.png">
+
+
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="./img/logo_wine.png" id="logo" alt="WineSystem PUC-Rio">
+                </div>
+                <div class="col-md-6 text-right">
+                    <h1>Sistema de Pesquisas de Qualidade de Vinhos</h1>
+                    <p>
+                        Projeto desenvolvido para a Sprint 4 da PUC-Rio.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <form class="p-4" id="vinhoForm">
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="volatile_acidity">Acidez volátil</label>
+                    <input type="text" class="form-control" id="volatile_acidity" placeholder="Acidez volátil">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="citric_acid">Ácido cítrico</label>
+                    <input type="text" class="form-control" id="citric_acid" placeholder="Ácido cítrico">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="residual_sugar">Açúcar residual</label>
+                    <input type="text" class="form-control" id="residual_sugar" placeholder="Açúcar residual">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="chlorides">Cloretos</label>
+                    <input type="text" class="form-control" id="chlorides" placeholder="Cloretos">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="free_sulfur_dioxide">Dióxido de enxofre livre</label>
+                    <input type="text" class="form-control" id="free_sulfur_dioxide" placeholder="Dióxido de enxofre livre">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="total_sulfur_dioxide">Dióxido de enxofre total</label>
+                    <input type="text" class="form-control" id="total_sulfur_dioxide" placeholder="Dióxido de enxofre total">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="density">Densidade</label>
+                    <input type="text" class="form-control" id="density" placeholder="Densidade">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="ph">pH</label>
+                    <input type="text" class="form-control" id="ph" placeholder="pH">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <label for="sulphates">Sulfatos</label>
+                    <input type="text" class="form-control" id="sulphates" placeholder="Sulfatos">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="alcohol">Teor alcoólico</label>
+                    <input type="text" class="form-control" id="alcohol" placeholder="Teor alcoólico">
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="quality">Avaliação (0 a 10)</label>
+                    <input type="text" class="form-control" id="quality" placeholder="Avaliação (0 a 10)">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-3">
+                    <button type="submit" class="btn button-wine" id="adicionarVinho">Cadastrar</button>
+                </div>
+            </div>
+
+        </form>
+
+        <table class="table table-bordered" id="vinhoTable">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Acidez Volátil</th>
+                    <th>Ácido Cítrico</th>
+                    <th>Açúcar Residual</th>
+                    <th>Cloretos</th>
+                    <th>Dióxido de Enxofre Livre</th>
+                    <th>Dióxido de Enxofre Total</th>
+                    <th>Densidade</th>
+                    <th>pH</th>
+                    <th>Sulfatos</th>
+                    <th>Teor Alcoólico</th>
+                    <th width="160px">Qualidade</th>
+                    <th>Excluir</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script src="./js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js"></script>
+</body>
+
+</html>

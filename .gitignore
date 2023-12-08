@@ -1,0 +1,12 @@
+# Remover ambiente virtual
+env
+api/env
+# Remover a pasta de banco de dados
+api/db
+# Remover a pasta de logs
+api/log
+
+# Remover pasta de cache
+api/__pycache__
+api/.pytest_cache
+api/*/__pycache__
