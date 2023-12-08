@@ -6,11 +6,11 @@ Este repositório tem como objetivo apresentar o projeto MVP da Sprint 4, **Qual
 
 Classificação da qualidade de vinhos com diversos propriedadas avaliadas. O critério de avaliação foi o nível de qualidade, sendo considerado o vinho maior qualidade quando maior ou igual a média 6 (seis).
 
-## Como executar
+## API: Como executar
 
-```powershell
+```bash
 # Acesse a pasta do da aplicação no terminal
-$ cd pucrio-mvp-api
+$ cd mvp-sprint4/api
 
 # Crie o ambiente virtual
 $ python -m venv env
@@ -28,6 +28,15 @@ $ env/Scripts/Activate.ps1
 (env)$ Deactivate
 
 # A aplicação será aberta na porta:5000 - acesse http://localhost:5000
+```
+
+## Front-end: Como executar
+
+```bash
+# Acesse a pasta do da aplicação no terminal
+$ cd mvp-sprint4/front
+
+# Execute o arquivo index.html para abrir o front-end em seu browser
 ```
 
 # Notebook Colab
