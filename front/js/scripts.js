@@ -1,4 +1,19 @@
 $(document).ready(function () {
+  $(".numeric").inputmask({
+    alias: "numeric",
+    allowMinus: false,
+    digits: 4,
+    rightAlign: false,
+    max: 99.9999,
+  });
+
+  $(".avaliacao").inputmask({
+    mask: "9",
+    placeholder: "0",
+    min: 0,
+    max: 10,
+  });
+
   $("#vinhoForm").submit(function (event) {
     var formData = $(this).serialize();
 
