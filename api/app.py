@@ -1,5 +1,6 @@
+from sqlalchemy.exc import SQLAlchemyError
 from flask_openapi3 import OpenAPI, Info, Tag
-from flask import redirect
+from flask import redirect, request
 from urllib.parse import unquote
 import joblib
 
@@ -63,68 +64,70 @@ def predict(form: VinhoSchema):
     Inclui um novo vinho e retorna uma representação dos vinhos avaliados e suas qualidades.
 
     Args:
-
-        fixed_acidity (float): Acidez fixa
-        volatile_acidity (float): Acidez volátil
-        citric_acid (float): Ácido cítrico
-        residual_sugar (float): Açúcar residual
-        chlorides (float): Cloretos
-        free_sulfur_dioxide (float): Dióxido de enxofre livre
-        total_sulfur_dioxide (float): Dióxido de enxofre total
-        density (float): Densidade
-        ph (float): pH
-        sulphates (float): Sulfatos
-        alcohol (float): Teor alcoólico
-        quality (int): Avaliação de qualidade
+        ... (mesmo que antes)
 
     Returns:
         Exibe o Schema da inclusão do vinho e todas as suas propriedades.
     """
-
-    # Carregando modelo
-    ml_path = "ml_model/vinho_qualidade_knn.pkl"
-    scaler_path = joblib.load("ml_model/scaler.joblib")
-    modelo = Model.carrega_modelo(ml_path, scaler_path)
-
-    vinho = Vinho(
-
-        fixed_acidity=form.fixed_acidity,
-        volatile_acidity=form.volatile_acidity,
-        citric_acid=form.citric_acid,
-        residual_sugar=form.residual_sugar,
-        chlorides=form.chlorides,
-        free_sulfur_dioxide=form.free_sulfur_dioxide,
-        total_sulfur_dioxide=form.total_sulfur_dioxide,
-        density=form.density,
-        ph=form.ph,
-        sulphates=form.sulphates,
-        alcohol=form.alcohol,
-        quality=Model.preditor(modelo, form)
-    )
-    logger.debug(f"Adicionando vinho: '{vinho.id}'")
-
     try:
-        # Criando conexão com a base
-        session = Session()
-        # Adicionando vinho
-        session.add(vinho)
-        # Commitando o registro no banco
-        session.commit()
-        # Concluindo a transação
+        with Session() as session:
 
-        return apresenta_vinho(vinho), 200
+            # Carregando modelo
+            ml_path = "ml_model/vinho_qualidade_knn.pkl"
+            scaler_path = joblib.load("ml_model/scaler.joblib")
+            modelo = Model.carrega_modelo(ml_path, scaler_path)
 
-    # Caso ocorra algum erro na adição
-    except Exception as e:
-        error_msg = "Não foi possível salvar novo item."
-        logger.warning(
-            f"Erro ao adicionar vinho '{vinho.id}', {error_msg}"
-        )
+            # Verificar se o modelo foi carregado com sucesso
+            if modelo is None:
+                return {"message": "Erro ao carregar modelo"}, 500
+
+            # Exibindo informações de depuração
+            logger.debug(f"Modelo carregado: {modelo}")
+            logger.debug(f"Caminho do modelo: {ml_path}")
+
+            # Criando instância de Vinho
+            vinho = Vinho(
+                fixed_acidity=form.fixed_acidity,
+                volatile_acidity=form.volatile_acidity,
+                citric_acid=form.citric_acid,
+                residual_sugar=form.residual_sugar,
+                chlorides=form.chlorides,
+                free_sulfur_dioxide=form.free_sulfur_dioxide,
+                total_sulfur_dioxide=form.total_sulfur_dioxide,
+                density=form.density,
+                ph=form.ph,
+                sulphates=form.sulphates,
+                alcohol=form.alcohol,
+                quality=Model.preditor(modelo, form)
+            )
+
+            logger.debug(f"Adicionando vinho: '{vinho.id}'")
+
+            session = Session()
+            session.add(vinho)
+            session.commit()
+
+            return apresenta_vinho(vinho), 200
+
+    # Exceção específica para SQLAlchemyError
+    except SQLAlchemyError as e:
+        # Faz rollback se ocorrer uma exceção
+        session.rollback()
+        error_msg = f"Não foi possível salvar novo item. Detalhes: {str(e)}"
+        logger.warning(f"Erro ao adicionar vinho '{vinho.id}', {error_msg}")
         return {"message": error_msg}, 400
 
+    # Exceção genérica para qualquer outra exceção
+    except Exception as e:
+        error_msg = f"Erro inesperado. Detalhes: {str(e)}"
+        logger.error(f"Erro ao adicionar vinho '{vinho.id}', {error_msg}")
+        return {"message": error_msg}, 500
 
-# Métodos baseados em nome
-# Recurso: Busca de vinho por nome
+
+# Métodos baseados em ID
+# Recurso: Busca de vinho por ID
+
+
 @app.get(
     "/vinho",
     tags=[vinho_tag],

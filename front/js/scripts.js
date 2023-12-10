@@ -14,22 +14,37 @@ $(document).ready(function () {
     max: 10,
   });
 
-  $("#vinhoForm").submit(function (event) {
-    var formData = $(this).serialize();
+  $("#adicionarVinho").click(function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+
+    formData.append("fixed_acidity", $("#fixed_acidity").val());
+    formData.append("volatile_acidity", $("#volatile_acidity").val());
+    formData.append("citric_acid", $("#citric_acid").val());
+    formData.append("residual_sugar", $("#residual_sugar").val());
+    formData.append("chlorides", $("#chlorides").val());
+    formData.append("free_sulfur_dioxide", $("#free_sulfur_dioxide").val());
+    formData.append("total_sulfur_dioxide", $("#total_sulfur_dioxide").val());
+    formData.append("density", $("#density").val());
+    formData.append("ph", $("#ph").val());
+    formData.append("sulphates", $("#sulphates").val());
+    formData.append("alcohol", $("#alcohol").val());
+
+    console.log("Vinho Data:", formData);
 
     $.ajax({
       type: "POST",
       url: "http://127.0.0.1:5000/vinho",
       data: formData,
+      processData: false, // Evita que o jQuery processe os dados, pois o FormData já cuida disso
+      contentType: false, // Evita que o jQuery defina automaticamente o cabeçalho 'Content-Type'
       success: function (response) {
         $("#vinhoForm")[0].reset();
-
         carregaTabela();
-
         exibirAlerta(
           "success",
           "Sucesso!",
-          "O item foi adicionado na lista de compra.",
+          "O vinho foi adicionado na pesquisa.",
           3000
         );
       },
@@ -38,51 +53,6 @@ $(document).ready(function () {
       },
     });
   });
-
-  function carregaTabela() {
-    $.ajax({
-      type: "GET",
-      url: "http://127.0.0.1:5000/vinhos",
-      dataType: "json",
-      success: function (data) {
-        $("#vinhoTable tbody").empty();
-
-        console.log(data);
-
-        $.each(data.vinhos, function (index, vinho) {
-          var qualidade_vinho =
-            vinho.quality == 1
-              ? "<span class='quality-indicator '><i class='fa fa-caret-up above-average'></i> Acima da média</span>"
-              : "<span class='quality-indicator'><i class='fa fa-caret-down below-average'></i> Abaixo da média</span>";
-
-          var row = "<tr>";
-          row += "<td>" + vinho.id + "</td>";
-          row += "<td>" + vinho.volatile_acidity + "</td>";
-          row += "<td>" + vinho.citric_acid + "</td>";
-          row += "<td>" + vinho.residual_sugar + "</td>";
-          row += "<td>" + vinho.chlorides + "</td>";
-          row += "<td>" + vinho.free_sulfur_dioxide + "</td>";
-          row += "<td>" + vinho.total_sulfur_dioxide + "</td>";
-          row += "<td>" + vinho.density + "</td>";
-          row += "<td>" + vinho.ph + "</td>";
-          row += "<td>" + vinho.sulphates + "</td>";
-          row += "<td>" + vinho.alcohol + "</td>";
-          row += "<td>" + qualidade_vinho + "</td>";
-          row +=
-            "<td><i class='fa fa-trash deletar-vinho' aria-hidden='true' onclick='deletarVinho(" +
-            vinho.id +
-            ")'></i></td>";
-          row += "</tr>";
-
-          // Adicionar a linha à tabela
-          $("#vinhoTable tbody").append(row);
-        });
-      },
-      error: function (error) {
-        console.error("Erro ao carregar a tabela:", error);
-      },
-    });
-  }
 
   carregaTabela();
 });
@@ -134,5 +104,50 @@ function exibirAlerta(status, titulo, texto, tempo) {
     showConfirmButton: false,
     background: "#212529",
     timer: tempo,
+  });
+}
+
+function carregaTabela() {
+  $.ajax({
+    type: "GET",
+    url: "http://127.0.0.1:5000/vinhos",
+    dataType: "json",
+    success: function (data) {
+      $("#vinhoTable tbody").empty();
+
+      $.each(data.vinhos, function (index, vinho) {
+        var qualidade_vinho =
+          vinho.quality == 1
+            ? "<span class='quality-indicator '><i class='fa fa-caret-up above-average'></i> Acima da média</span>"
+            : "<span class='quality-indicator'><i class='fa fa-caret-down below-average'></i> Abaixo da média</span>";
+        console.log(`Qualidade do vinho: ${vinho.quality}`);
+        console.log(`Tratamento: ${vinho.quality}`);
+
+        var row = "<tr>";
+        row += "<td>" + vinho.id + "</td>";
+        row += "<td>" + vinho.volatile_acidity + "</td>";
+        row += "<td>" + vinho.citric_acid + "</td>";
+        row += "<td>" + vinho.residual_sugar + "</td>";
+        row += "<td>" + vinho.chlorides + "</td>";
+        row += "<td>" + vinho.free_sulfur_dioxide + "</td>";
+        row += "<td>" + vinho.total_sulfur_dioxide + "</td>";
+        row += "<td>" + vinho.density + "</td>";
+        row += "<td>" + vinho.ph + "</td>";
+        row += "<td>" + vinho.sulphates + "</td>";
+        row += "<td>" + vinho.alcohol + "</td>";
+        row += "<td>" + qualidade_vinho + "</td>";
+        row +=
+          "<td><i class='fa fa-trash deletar-vinho' aria-hidden='true' onclick='deletarVinho(" +
+          vinho.id +
+          ")'></i></td>";
+        row += "</tr>";
+
+        // Adicionar a linha à tabela
+        $("#vinhoTable tbody").append(row);
+      });
+    },
+    error: function (error) {
+      console.error("Erro ao carregar a tabela:", error);
+    },
   });
 }
