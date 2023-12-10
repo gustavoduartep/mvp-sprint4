@@ -39,7 +39,7 @@ $(document).ready(function () {
       processData: false, // Evita que o jQuery processe os dados, pois o FormData já cuida disso
       contentType: false, // Evita que o jQuery defina automaticamente o cabeçalho 'Content-Type'
       success: function (response) {
-        $("#vinhoForm")[0].reset();
+        //$("#vinhoForm")[0].reset();
         carregaTabela();
         exibirAlerta(
           "success",

@@ -63,19 +63,20 @@ def predict(form: VinhoSchema):
     """Adiciona um novo vinho à base de dados
     Inclui um novo vinho e retorna uma representação dos vinhos avaliados e suas qualidades.
 
-    Args:
-        ... (mesmo que antes)
-
     Returns:
         Exibe o Schema da inclusão do vinho e todas as suas propriedades.
     """
     try:
         with Session() as session:
 
+            print(f"Form: {form}")
+
             # Carregando modelo
             ml_path = "ml_model/vinho_qualidade_knn.pkl"
             scaler_path = joblib.load("ml_model/scaler.joblib")
             modelo = Model.carrega_modelo(ml_path, scaler_path)
+
+            print(f"Modelo: {modelo}")
 
             # Verificar se o modelo foi carregado com sucesso
             if modelo is None:
