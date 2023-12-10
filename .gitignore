@@ -2,7 +2,8 @@
 env
 api/env
 # Remover a pasta de banco de dados
-api/db
+api/db/db_vinho.sqlite3
+*/db/db_vinho.sqlite3
 # Remover a pasta de logs
 api/log
 
